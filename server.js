@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
 const http = require('http');
-const server = http.createServer(app);
-const logger = require('morgan');
-const cors = require('cors')
-const passport = require('passport')
+const server = http.createServer(app); // logger winston CloudWatch
+const morgan = require('morgan'); //loger http
+const logger = require('./utils/logger');
+const cors = require('cors');
+const passport = require('passport');
+const initDb = require("./config/config")
 
 /*
 * RUTAS
@@ -16,7 +18,7 @@ const tasks = require('./routes/taskRoutes');
 
 const port  = process.env.PORT || 3000;
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -37,21 +39,29 @@ projects(app);
 userHistories(app);
 tasks(app);
 
-// server.listen(3000, '10.31.14.139' || 'localhost', function() {
-//     console.log("API projects " + process.pid + " iniciada ...\nEn el puerto " + port)
-// });
 
-server.listen(port, function() {
-    console.log("Listening on port " +  port)
-});
+// Inicializar base de datos
+(async () => {
+	try {
+		const db = await initDb();
+		const result = await db.any("SELECT NOW()");
+		console.log("DB Connected: ", result);
+	} catch (err) {
+		console.error("Error connecting to DB", err);
+	}
+}) ();
+
+server.listen(port, () => {
+	logger.info(`Server listening on port ${port}`); 
+})
 
 // ERROR HANDLER
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(err.status || 500).send(err.stack);
-})
+});
 
 module.exports = {
     app: app,
     server: server
-}
+};

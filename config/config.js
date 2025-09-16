@@ -4,27 +4,37 @@ const options = {
     query: (e) =>{}
 }
 const https = require('https');
-
-// Opción para deshabilitar la validación del certificado
-const httpsAgent = new https.Agent({
-  rejectUnauthorized: false
-});
+const AWS = require("aws-sdk");
 
 const pgp = require('pg-promise')(options);
 const types = pgp.pg.types;
-types.setTypeParser(1114, function(stringValue){
-    return stringValue;
-});
+types.setTypeParser(1114, (stringValue) => stringValue);
 
-const databaseConfig = {
-    'host': 'ec2-54-86-180-157.compute-1.amazonaws.com',
-    'port': 5432,
-    'database':'d7o1ig7buerp0e',
-    'user': 'jpgakxruhdbwhz',
-    'password': '075fd109de652ddd1e9af79358d35845f0d52fbff8982c668109dbbc165a30cc',
-    'ssl': { rejectUnauthorized: false }
-};
+// Configuración de Secrets Manager
+const secretsManager = new AWS.secretsManager({ region: process.env.AWS_REGION || "us-east-1" });
 
-const db = pgp(databaseConfig);
+async function getDbConfig() {
+	const secret = await secretsManager
+		.getSecretValue({ SecretId: "db_designacion_tareas_credentials" })
+		.promise();
+	
+	const creds = JSON.parse(secret.SecretString);
 
-module.exports = db;
+	return {
+		host: creds.host,
+		port: creds.port || 5432,
+		database: creds.dbname,
+		user: creds.username,
+		password: creds.password,
+		ssl: { rejectUnauthorized: false } 
+	};
+}
+
+// Inicializa conexión dinámica
+async function initDb() {
+	const databaseConfig = await getDbConfig();
+	const db = await getDbConfig();
+	return db;
+}
+
+module.exports = initDb;
