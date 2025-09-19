@@ -11,7 +11,7 @@ const types = pgp.pg.types;
 types.setTypeParser(1114, (stringValue) => stringValue);
 
 // Configuración de Secrets Manager
-const secretsManager = new AWS.secretsManager({ region: process.env.AWS_REGION || "us-east-1" });
+const secretsManager = new AWS.SecretsManager({ region: process.env.AWS_REGION || "us-east-1" });
 
 async function getDbConfig() {
 	const secret = await secretsManager
