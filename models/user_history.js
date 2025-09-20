@@ -27,7 +27,7 @@ UserHistory.create = async (UserHistory, Project) => {
         )
     VALUES($1, $2, $3, $4, $5) RETURNING id
     `;
-    return db.oneOrNone(sql,[
+    return _db.oneOrNone(sql,[
         UserHistory.description,
         UserHistory.criteria,
         Project.created_by_id,
@@ -47,7 +47,7 @@ UserHistory.search = async (id) => {
         FROM user_histories
         WHERE id = $1
     `;
-    return db.oneOrNone(sql, id);
+    return _db.oneOrNone(sql, id);
 }
 
 /**
@@ -68,7 +68,7 @@ UserHistory.update = async (UserHistory) => {
             id = $1
     `;
 
-    return db.none(sql, [
+    return _db.none(sql, [
         UserHistory.id,
         UserHistory.description,
         UserHistory.criteria,
@@ -93,7 +93,7 @@ UserHistory.updateState = async (id, user) => {
         VALUES ($1, $2, $3) RETURNING id
     `;
 
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         id,
         user,
         new Date()
@@ -111,7 +111,7 @@ UserHistory.delete = async (id) => {
         FROM user_histories 
         WHERE id = $1 
     `;
-    return db.none(sql, id);
+    return _db.none(sql, id);
 }
 
 /**
@@ -125,7 +125,7 @@ UserHistory.deleteChangeTracking = (id) => {
         FROM change_tracking_history 
         WHERE user_histoy_id = $1 
     `;
-    return db.none(sql, id);
+    return _db.none(sql, id);
 }
 
 module.exports = UserHistory;

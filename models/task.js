@@ -29,7 +29,7 @@ Task.create = async(Task, History) => {
     VALUES($1, $2, $3, $4, $5) RETURNING id
     `;
 
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         Task.name,
         Task.description,
         History.id,
@@ -52,7 +52,7 @@ Task.search = async (id) => {
         WHERE
             id = $1
     `;
-    return db.oneOrNone(sql, id);
+    return _db.oneOrNone(sql, id);
 }
 
 /**
@@ -69,7 +69,7 @@ Task.searchHistory = async (id) => {
         WHERE
             user_history_id = $1
     `;
-    return db.manyOrNone(sql, id);
+    return _db.manyOrNone(sql, id);
 }
 
 /**
@@ -87,7 +87,7 @@ Task.update = async(Task) => {
         WHERE
             id = $1
     `;
-    return db.none(sql,[
+    return _db.none(sql,[
         Task.id,
         Task.name,
         Task.description,
@@ -110,7 +110,7 @@ Task.searchUserTask = async (task, user) => {
         WHERE
             task_id = $1 AND user_id = $2
         `;
-    return db.oneOrNone(sql, [task, user]);
+    return _db.oneOrNone(sql, [task, user]);
 }
 
 /**
@@ -131,7 +131,7 @@ Task.searchManager = async (task, user) => {
         WHERE 
             uh.created_by_id = $1 AND t.id = $2
     `;
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         user,
         task
     ]);
@@ -148,7 +148,7 @@ Task.delete = (task) => {
         FROM tasks 
         WHERE id = $1 
     `;
-    return db.none(sql, task);
+    return _db.none(sql, task);
 }
 
 /**
@@ -162,7 +162,7 @@ Task.deleteAssignments = (task) => {
         FROM task_assignment 
         WHERE task_id = $1 
     `;
-    return db.none(sql, task);
+    return _db.none(sql, task);
 }
 
 /**
@@ -176,7 +176,7 @@ Task.deleteChangeTracking = (task) => {
         FROM change_tracking_task 
         WHERE task_id = $1 
     `;
-    return db.none(sql, task);
+    return _db.none(sql, task);
 }
 
 /**
@@ -194,7 +194,7 @@ Task.assignment = async (task, user) => {
             )
         VALUES($1, $2) RETURNING id
         `;
-    return db.oneOrNone(sql, [task, user]);
+    return _db.oneOrNone(sql, [task, user]);
 }
 
 /**
@@ -213,7 +213,7 @@ Task.updateState = async(task, user) => {
             )
         VALUES ($1, $2, $3) RETURNING task_id
     `;
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         task,
         user,
         new Date()
@@ -233,7 +233,7 @@ Task.updateTask = async(task_id, state_id) => {
         SET state_id = $2
         WHERE id = $1
     `;
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         task_id,
         state_id
     ]);
@@ -255,7 +255,7 @@ Task.notFinalized = async(user_history) => {
             AND user_history_id = $1
     `;
 
-    return db.manyOrNone(sql, user_history);
+    return _db.manyOrNone(sql, user_history);
 }
 
 module.exports = Task;

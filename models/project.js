@@ -26,7 +26,7 @@ Project.create = (project) => {
         )
     VALUES($1, $2, $3, $4, $5) RETURNING id
     `;
-    return db.oneOrNone(sql, [
+    return _db.oneOrNone(sql, [
         project.name,
         project.description,
         project.created_by_id,
@@ -50,7 +50,7 @@ Project.addDeveloper = async (project_id, user_id) => {
         )
     VALUES($1, $2)
     `;
-    return db.none(sql, [
+    return _db.none(sql, [
         project_id,
         user_id
     ]);
@@ -67,7 +67,7 @@ Project.search_project = (id) => {
         FROM projects
         WHERE id = $1
     `;
-    return db.oneOrNone(sql, id);
+    return _db.oneOrNone(sql, id);
 }
 
 /**
@@ -82,7 +82,7 @@ Project.deleteDeveloper = (user_id, project_id) => {
         FROM project_assigment 
         WHERE user_id = $1 AND project_id = $2
     `;
-    return db.none(sql, [user_id, project_id]);
+    return _db.none(sql, [user_id, project_id]);
 }
 
 /**
@@ -97,7 +97,7 @@ Project.search_assignment = (user_id, project_id) => {
         FROM project_assigment
         WHERE user_id = $1 AND project_id = $2
     `;
-    return db.oneOrNone(sql, [user_id, project_id]);
+    return _db.oneOrNone(sql, [user_id, project_id]);
 }
 
 /**
@@ -115,7 +115,7 @@ Project.view_project_developer = (user_id) => {
         ON pa.project_id = p.id
         WHERE u.id = $1 
     `;
-    return db.manyOrNone(sql, user_id);
+    return _db.manyOrNone(sql, user_id);
 }
 
 /**
@@ -131,7 +131,7 @@ Project.view_project_gerente = (user_id) => {
         ON u.id = p.created_by_id
         WHERE u.id = $1; 
     `;
-    return db.manyOrNone(sql, user_id);
+    return _db.manyOrNone(sql, user_id);
 }
 
 module.exports = Project;

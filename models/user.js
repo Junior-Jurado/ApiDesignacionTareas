@@ -25,7 +25,7 @@ User.getAll = () =>{
     FROM 
         users
     `;
-    return db.manyOrNone(sql);
+    return _db.manyOrNone(sql);
 }
 
 /**
@@ -49,7 +49,7 @@ User.create = async (user) => {
     VALUES($1, $2, $3, $4, $5, $6) RETURNING id
     `;
 
-    return db.oneOrNone(sql,[
+    return _db.oneOrNone(sql,[
         user.user_name,
         user.email,
         hash,
@@ -78,7 +78,7 @@ User.findByEmail = (email) => {
     WHERE 
         email = $1 OR user_name = $1
     `;
-    return db.oneOrNone(sql, email);
+    return _db.oneOrNone(sql, email);
 }
 
 /**
@@ -95,7 +95,7 @@ User.findByIdPerRol = (id) => {
     WHERE 
         id = $1
     `;
-    return db.oneOrNone(sql, id);
+    return _db.oneOrNone(sql, id);
 }
 
 /**
@@ -117,7 +117,7 @@ User.findById = (id, callback) => {
     WHERE 
         id = $1
     `;
-    return db.oneOrNone(sql, id).then(user => { callback(null,user) });
+    return _db.oneOrNone(sql, id).then(user => { callback(null,user) });
 }
 
 /**
@@ -135,7 +135,7 @@ User.updateSessionToken = (id_user, session_token) => {
     WHERE
         id = $1
     `;
-    return db.none(sql, [
+    return _db.none(sql, [
         id_user,
         session_token
     ]);
