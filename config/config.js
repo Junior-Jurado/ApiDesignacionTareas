@@ -22,7 +22,7 @@ async function getDbConfig() {
   const creds = JSON.parse(secret.SecretString);
 
   return {
-    host: creds.host,
+    host: creds.host.replace(/:5432$/, ""),
     port: creds.port || 5432,
     database: creds.dbname,
     user: creds.username,
