@@ -14,7 +14,7 @@ const initDb = require("./config/config");
 const User = require('./models/user');
 const Project = require('./models/project');
 const Task = require('./models/task');
-const UserHistory = require('./models/userHistory'); // si existe
+const UserHistory = require('./models/user_history'); // si existe
 
 // =======================
 // RUTAS
