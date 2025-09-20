@@ -24,7 +24,7 @@ async function getDbConfig() {
   return {
     host: creds.host.replace(/:5432$/, ""),
     port: creds.port || 5432,
-    database: creds.dbname,
+    database: creds.database,
     user: creds.username,
     password: creds.password,
     ssl: { rejectUnauthorized: false },
