@@ -44,8 +44,16 @@ tasks(app);
 (async () => {
 	try {
 		const db = await initDb();
-		const result = await db.any("SELECT NOW()");
 		console.log("DB Connected: ", result);
+
+		// Inyectar db al modelo
+		User.setDb(db);
+		
+		// Llamando a las rutas
+		users(app);
+		projects(app);
+		userHistories(app);
+		tasks(app);
 	} catch (err) {
 		console.error("Error connecting to DB", err);
 	}

@@ -1,8 +1,17 @@
 const db = require('../config/config');
 // Importa la librería bcrypt para el hash de contraseñas
 const bcrypt = require('bcryptjs');
-
 const User = {};
+
+let db;
+User.setDb = (database) => {
+	db = database;
+}
+
+// ================================
+// Funciones del modelo
+// ================================
+
 
 /**
  * Obtiene todos los usuarios de la base de datos.
