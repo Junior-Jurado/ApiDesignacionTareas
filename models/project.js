@@ -2,6 +2,13 @@ const db = require('../config/config');
 
 const Project = {};
 
+
+let _db = db;
+
+Project.setDb = (newDb) => {
+	_db = newDb;
+};
+
 /**
  * Crea un nuevo proyecto en la base de datos.
  * @param {Object} project - Objeto que contiene los datos del proyecto a crear.

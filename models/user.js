@@ -3,10 +3,11 @@ const db = require('../config/config');
 const bcrypt = require('bcryptjs');
 const User = {};
 
-let db;
-User.setDb = (database) => {
-	db = database;
-}
+let _db = db;
+
+User.setDb = (newDb) => {
+	_db = newDb;
+};
 
 // ================================
 // Funciones del modelo

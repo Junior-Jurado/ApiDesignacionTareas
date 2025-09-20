@@ -2,6 +2,13 @@ const db = require('../config/config');
 
 const UserHistory = {};
 
+
+let _db = db;
+
+UserHistory.setDb = (newDb) => {
+	_db = newDb;
+};
+
 /**
  * Crea un nuevo historial de usuario en la base de datos.
  * @param {Object} UserHistory - Objeto que contiene los datos del historial de usuario a crear.

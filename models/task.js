@@ -3,6 +3,13 @@ const db = require('../config/config')
 // Objeto Task que maneja las operaciones relacionadas con tareas en la base de datos
 const Task = {};
 
+
+let _db = db;
+
+Task.setDb = (newDb) => {
+	_db = newDb;
+};
+
 /**
  * Crea una nueva tarea en la base de datos.
  * @param {Object} Task - Objeto que contiene los datos de la tarea a crear.

@@ -15,6 +15,8 @@ const users = require('./routes/userRoutes');
 const projects = require('./routes/projectRoutes');
 const userHistories = require('./routes/userHistoryRoutes')
 const tasks = require('./routes/taskRoutes');
+const Project = require('./models/project');
+const Task = require('./models/task');
 
 const port  = process.env.PORT || 3000;
 
@@ -44,16 +46,14 @@ tasks(app);
 (async () => {
 	try {
 		const db = await initDb();
-		console.log("DB Connected: ", result);
+		console.log("DB Connected");
 
 		// Inyectar db al modelo
 		User.setDb(db);
-		
-		// Llamando a las rutas
-		users(app);
-		projects(app);
-		userHistories(app);
-		tasks(app);
+        Project.setDb(db);
+        Task.setDb(db);
+        UserHistory.setDb(db);
+
 	} catch (err) {
 		console.error("Error connecting to DB", err);
 	}
