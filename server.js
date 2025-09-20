@@ -47,10 +47,10 @@ tasks(app);
 		console.log("DB Connected");
 
 		// Inyectar db al modelo
-		users.setDb(db);
-	    projects.setDb(db);
-		userHistories.setDb(db);
-		tasks.setDb(db);
+		User.setDb(db);
+		Project.setDb(db);
+		Task.setDb(db);
+		UserHistory.setDb(db);
 
 	} catch (err) {
 		console.error("Error connecting to DB", err);
